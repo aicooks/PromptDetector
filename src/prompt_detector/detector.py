@@ -16,6 +16,13 @@ except Exception:  # pragma: no cover - guardrails optional
     DetectJailbreak = None
 
 USE_GUARDRAILS = os.getenv("PROMPTDETECTOR_USE_GUARDRAILS", "0") == "1"
+FORCE_REJECT_RULES = {
+    "override-system",
+    "reveal-system",
+    "policy-evasion",
+    "tool-abuse",
+    "data-exfiltration",
+}
 
 
 @dataclass
@@ -111,7 +118,12 @@ def analyze(text: str) -> Dict[str, Any]:
     else:
         fused_score = score
 
-    action = _score_to_action(fused_score)
+    force_reject = any(match.rule_id in FORCE_REJECT_RULES for match in matches)
+    if force_reject:
+        fused_score = max(70, fused_score)
+        action = "拒绝"
+    else:
+        action = _score_to_action(fused_score)
 
     if matches:
         summary = f"命中 {len(matches)} 条规则，风险分数 {fused_score}/100。"
