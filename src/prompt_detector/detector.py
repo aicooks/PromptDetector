@@ -106,7 +106,8 @@ def analyze(text: str) -> Dict[str, Any]:
         guardrails_score, guardrails_detail = _guardrails_jailbreak_score(cleaned)
 
     if USE_GUARDRAILS:
-        fused_score = int(min(100, score * 0.7 + guardrails_score * 100 * 0.3))
+        blended_score = int(min(100, score * 0.5 + guardrails_score * 100 * 0.5))
+        fused_score = max(score, blended_score)
     else:
         fused_score = score
 
