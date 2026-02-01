@@ -1,7 +1,7 @@
 # PromptDetector
 
 PromptDetector 是一个用于**防护与测试**的提示注入/越狱检测演示台（Playground）。它不会提供攻击教程，仅用于帮助开发者在真实工程中识别高风险提示输入。
-
+![Webpage](./image/Webpage.png)
 ## 功能亮点
 
 - 输入 prompt/对话 → 输出风险分数、命中规则与建议处置（允许/二次确认/拒绝）
